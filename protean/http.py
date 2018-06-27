@@ -20,10 +20,13 @@ class MetricsResponseHandler(hollywood.actor.Threaded):
         return response
 
 
-def serve_forever(port=5000):
+def serve_forever(address='0.0.0.0', port=5000, certfile=None):
     hollywood.System.init()
     http_server = hollywood.System.new('hollywood/http/Server')
-    http_server.tell(port=port, response_handler='MetricsResponseHandler')
+    http_server.tell(address=address,
+                     port=port,
+                     certfile=certfile,
+                     response_handler='MetricsResponseHandler')
 
     while hollywood.System.status()['processes'] > 0:
         status = hollywood.System.status()

@@ -17,6 +17,8 @@ def main(): # pragma: nocover
         help="The IP address the exporter should bind to.")
     parser.add_argument("-p", "--port", default=8000, \
         help="The port the exporter should listen to.")
+    parser.add_argument("-c", "--certfile",
+        help="The certificate (PEM). Optional, if you need https.")
     parser.add_argument("-v", "--verbose", action="store_true", \
         help="Increase output verbosity")
 
@@ -30,7 +32,7 @@ def main(): # pragma: nocover
         logging.debug('Verbose mode activated.')
 
     hollywood.System.init()
-    http.serve_forever()
+    http.serve_forever(args.address, args.port, args.certfile)
 
 
 if __name__ == '__main__': # pragma: nocover

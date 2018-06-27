@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-    Hollywood - Basic actor framework.
+    Protean - A prometheus client.
 """
 
 import os
@@ -26,6 +26,11 @@ setup(
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: MIT License",
     ],
-    setup_requires=['pytest-runner'],
-    tests_require=['pylint', 'pytest', 'pytest-cov', 'pytest-mock'],
+    install_requires=[
+        'hollywood',
+    ],
+    dependency_links=[
+        'git+https://github.com/grilo/hollywood.git#egg=hollywood'
+    ],
+    tests_require=['pytest-runner', 'pylint', 'pytest', 'pytest-cov', 'pytest-mock'],
 )

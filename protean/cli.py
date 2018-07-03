@@ -31,7 +31,6 @@ def main(): # pragma: nocover
         logging.getLogger().setLevel(logging.DEBUG)
         logging.debug('Verbose mode activated.')
 
-    hollywood.System.init()
     http.serve_forever(args.address, args.port, args.certfile)
 
 

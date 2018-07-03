@@ -25,8 +25,7 @@ class Registry(object):
 
     @classmethod
     def register(cls, actor, params):
-        hollywood.System.register(actor)
-        poller = hollywood.System.new(actor.address[0])
+        poller = hollywood.System.new(actor)
         cls.pollers[poller] = params
         cls.futures.append(poller.ask(params))
 
@@ -41,7 +40,7 @@ class Registry(object):
             buffered from previous iterations) is returned.
         """
         for idx, p in enumerate(cls.pollers.keys()):
-            if cls.futures[idx].empty():
+            if not cls.futures[idx].ready():
                 continue
             cls.last_response[idx] = cls.futures[idx].get()
             cls.futures[idx] = p.ask(cls.pollers[p])

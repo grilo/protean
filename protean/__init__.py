@@ -4,5 +4,4 @@ import hollywood
 import http
 
 def start():
-    hollywood.System.init()
     http.serve_forever()

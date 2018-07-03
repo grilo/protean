@@ -33,6 +33,7 @@ def metric_decorator(metric):
                 return self.metric.measure(result[0], **result[1]).to_string()
 
         actor = MetricActor
+        actor.__name__ = '/'.join([actor.__name__, function.__module__, function.__name__])
         actor.metric = metric
         actor.address = [__name__.replace('.', '/') + '/' + function.__name__]
         poller.Registry.register(actor, function)

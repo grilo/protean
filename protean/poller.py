@@ -25,7 +25,7 @@ class Registry(object):
 
     @classmethod
     def register(cls, actor, params):
-        poller = hollywood.System.new(actor)
+        poller = hollywood.System.spawn(actor)
         cls.pollers[poller] = params
         cls.futures.append(poller.ask(params))
 

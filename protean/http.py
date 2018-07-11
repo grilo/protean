@@ -2,6 +2,7 @@ import logging
 import time
 
 import hollywood
+import hollywood.message
 import hollywood.net.http
 
 import poller
@@ -18,11 +19,9 @@ class MetricsResponseHandler(hollywood.actor.Threaded):
 
 
 def serve_forever(address='0.0.0.0', port=5000, certfile=None):
-    handler = hollywood.System.new(MetricsResponseHandler)
-    http_server = hollywood.System.new(hollywood.net.http.Server, handler)
-    http_server.tell(address=address,
-                     port=port,
-                     certfile=certfile)
+    handler = hollywood.System.spawn(MetricsResponseHandler)
+    http_server = hollywood.System.spawn(hollywood.net.http.Server, handler)
+    http_server.tell(address=address, port=port, certfile=certfile)
 
     while hollywood.System.alive():
         logging.info("Actors running: %i", hollywood.System.alive())

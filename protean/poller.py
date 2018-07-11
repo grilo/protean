@@ -1,14 +1,20 @@
 #!/usr/bin/env python
 
-import time
-import logging
-import random
-import Queue
+"""
+    Traverse all registered collects and execute them.
+
+    Buffer the last response, in case the new one is not ready (actors
+    return promises and we leverage that).
+
+    We could probably enhace this by spawning some actors of our own to
+    collect metrics related with the host we're running in, http response
+    times and other fluff information.
+"""
+
+import collections
 
 import hollywood
 import hollywood.actor
-
-import meter
 
 
 class Registry(object):
@@ -19,9 +25,9 @@ class Registry(object):
         data obtained from polling.
     """
 
-    pollers = {}
+    pollers = collections.OrderedDict()
     futures = []
-    last_response = {}
+    last_response = collections.OrderedDict()
 
     @classmethod
     def register(cls, actor, params):
@@ -39,9 +45,9 @@ class Registry(object):
             The response of all actors (some may be fresh, others may be
             buffered from previous iterations) is returned.
         """
-        for idx, p in enumerate(cls.pollers.keys()):
+        for idx, actor in enumerate(cls.pollers.keys()):
             if not cls.futures[idx].ready():
                 continue
             cls.last_response[idx] = cls.futures[idx].get()
-            cls.futures[idx] = p.ask(cls.pollers[p])
+            cls.futures[idx] = actor.ask(cls.pollers[actor])
         return '\n'.join(cls.last_response.values())

@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
-import protean
+import time
+import random
 
+import protean
 from protean.decorators import *
 
 @counter('a_special_counter', 'a description')
 def something(*args):
-    return "10"
+    return 10
 
 @histogram('anhistogram', [25, 50, 100])
 def histo():

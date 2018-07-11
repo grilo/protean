@@ -2,7 +2,6 @@
 
 import time
 import collections
-import logging
 import re
 
 
@@ -53,7 +52,7 @@ class QuantileBucket(object):
     @staticmethod
     def _validate_buckets(buckets):
         if max(buckets) > 1:
-            raise InvalidQuantileError("Summary quantiles/buckets must not exceed value 1 (0 < Q < 1).")
+            raise InvalidQuantileError("Summary buckets shouldn't exceed value 1 (0 < Q < 1).")
 
     def __init__(self, name, buckets, labels):
         self.name = name
@@ -161,7 +160,6 @@ class Base(object):
         return "# HELP {name} {desc}".format(name=self.name, desc=self.description)
 
     def _type(self):
-        metric_type = self.__class__.__name__.lower()
         return "# TYPE {name} {metric_type}".format(
             name=self.name,
             metric_type=self.__class__.__name__.lower()

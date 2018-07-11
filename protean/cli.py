@@ -3,24 +3,24 @@
 import logging
 import argparse
 
-import hollywood
-
-import http
-import poller
+import protean.http
 
 
 def main(): # pragma: nocover
     desc = "Simple prometheus exporter."
     parser = argparse.ArgumentParser(description=desc)
 
-    parser.add_argument("-a", "--address", default='0.0.0.0', \
-        help="The IP address the exporter should bind to.")
-    parser.add_argument("-p", "--port", default=8000, \
-        help="The port the exporter should listen to.")
+    parser.add_argument("-a", "--address",
+                        help="The IP address the exporter should bind to.",
+                        default='0.0.0.0')
+    parser.add_argument("-p", "--port",
+                        help="The port the exporter should listen to.",
+                        default=8000)
     parser.add_argument("-c", "--certfile",
-        help="The certificate (PEM). Optional, if you need https.")
-    parser.add_argument("-v", "--verbose", action="store_true", \
-        help="Increase output verbosity")
+                        help="The certificate (PEM). Optional, if you need https.")
+    parser.add_argument("-v", "--verbose",
+                        help="Increase output verbosity",
+                        action="store_true")
 
     args = parser.parse_args()
 
@@ -31,7 +31,7 @@ def main(): # pragma: nocover
         logging.getLogger().setLevel(logging.DEBUG)
         logging.debug('Verbose mode activated.')
 
-    http.serve_forever(args.address, args.port, args.certfile)
+    protean.http.serve_forever(args.address, args.port, args.certfile)
 
 
 if __name__ == '__main__': # pragma: nocover
